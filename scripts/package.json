@@ -1,0 +1,12 @@
+{
+  "name": "epam-sf-meeting-brief-scripts",
+  "version": "1.0.0",
+  "description": "Brief generation scripts for the EPAM Salesforce Practice Meeting Brief Agent",
+  "private": true,
+  "scripts": {
+    "generate": "node generate-brief.js"
+  },
+  "dependencies": {
+    "docx": "^9.6.1"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "microsoft365": {
+      "type": "sse",
+      "url": "https://microsoft365.mcp.claude.com/mcp",
+      "note": "Microsoft 365 connector — provides access to Outlook email history and OneDrive/SharePoint for reading prior meeting briefs. Connect via Cowork Settings > Connectors > Microsoft 365. Required scope: Mail.Read, Files.Read.All, Sites.Read.All."
+    }
+  }
+}

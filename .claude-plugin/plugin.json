@@ -1,0 +1,11 @@
+{
+  "name": "epam-sf-meeting-brief",
+  "version": "1.0.0",
+  "description": "AI-powered meeting brief agent for the EPAM Salesforce Practice. Researches contacts from LinkedIn, Crunchbase, news, and Outlook, cross-references prior briefs from a shared OneDrive folder, and delivers a formatted Word document brief.",
+  "author": {
+    "name": "EPAM Salesforce Practice",
+    "email": "siba_padhy@epam.com"
+  },
+  "keywords": ["salesforce", "meeting-brief", "sales", "research", "epam"],
+  "repository": "https://github.com/epam-salesforce-practice/meeting-brief-agent"
+}

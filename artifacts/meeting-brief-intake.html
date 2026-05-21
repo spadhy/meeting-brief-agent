@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Meeting Brief</title>
+<style>
+  :root { color-scheme: light; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f4f5f7;
+    color: #111827;
+    padding: 20px 16px 48px;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .logo { background: #CC0000; color: white; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; padding: 3px 7px; border-radius: 3px; }
+  .header-text h1 { font-size: 17px; font-weight: 700; }
+  .header-text p  { font-size: 12px; color: #6b7280; margin-top: 1px; }
+
+  /* ── Workflow strip ── */
+  .workflow {
+    display: flex; align-items: center; gap: 0;
+    background: white; border: 1px solid #e5e7eb; border-radius: 10px;
+    padding: 10px 14px; margin-bottom: 16px; overflow-x: auto;
+  }
+  .wf-step { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .wf-dot {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; flex-shrink: 0;
+  }
+  .wf-dot.done  { background: #dcfce7; color: #16a34a; }
+  .wf-dot.active{ background: #CC0000; color: white; }
+  .wf-dot.next  { background: #f3f4f6; color: #9ca3af; border: 1.5px solid #e5e7eb; }
+  .wf-label { font-size: 11px; font-weight: 600; color: #374151; }
+  .wf-label.muted { color: #9ca3af; }
+  .wf-arrow { color: #d1d5db; font-size: 14px; margin: 0 8px; }
+
+  /* ── Section ── */
+  .section { margin-bottom: 12px; }
+  .section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.9px; color: #CC0000; margin-bottom: 7px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .section-label .num {
+    background: #CC0000; color: white; width: 17px; height: 17px;
+    border-radius: 50%; font-size: 10px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .card {
+    background: white; border: 1px solid #e5e7eb; border-radius: 10px;
+    padding: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  /* ── Fields ── */
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .row.one { grid-template-columns: 1fr; }
+  .row:last-child { margin-bottom: 0; }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  label { font-size: 12px; font-weight: 600; color: #374151; }
+  label .opt { font-weight: 400; color: #9ca3af; }
+
+  input[type="text"], input[type="url"], textarea, select {
+    border: 1px solid #d1d5db; border-radius: 6px; padding: 8px 10px;
+    font-size: 13px; color: #111827; background: #fafafa; font-family: inherit; width: 100%;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none; border-color: #CC0000; box-shadow: 0 0 0 3px rgba(204,0,0,0.09); background: white;
+  }
+  textarea { resize: vertical; line-height: 1.5; }
+
+  /* ── Chips ── */
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip { cursor: pointer; }
+  .chip input { display: none; }
+  .chip span {
+    display: inline-block; padding: 5px 13px; border: 1.5px solid #d1d5db;
+    border-radius: 20px; font-size: 12px; font-weight: 500; color: #4b5563;
+    background: #f9fafb; cursor: pointer; transition: all 0.15s; user-select: none;
+  }
+  .chip input:checked + span { border-color: #CC0000; background: #fff0f0; color: #CC0000; font-weight: 700; }
+  .chip span:hover { border-color: #CC0000; color: #CC0000; }
+
+  /* ── Attendee blocks ── */
+  .attendee {
+    background: #fafafa; border: 1px solid #e5e7eb; border-radius: 8px;
+    padding: 12px; margin-bottom: 8px; position: relative;
+  }
+  .attendee:last-of-type { margin-bottom: 0; }
+  .remove-btn {
+    position: absolute; top: 8px; right: 8px; background: none; border: none;
+    color: #9ca3af; cursor: pointer; font-size: 15px; padding: 2px 5px;
+    border-radius: 4px; transition: color 0.15s, background 0.15s;
+  }
+  .remove-btn:hover { color: #CC0000; background: #fff0f0; }
+  .add-btn {
+    width: 100%; margin-top: 8px; background: none; border: 1.5px dashed #d1d5db;
+    border-radius: 8px; padding: 7px; font-size: 12px; color: #6b7280;
+    cursor: pointer; font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    transition: all 0.15s;
+  }
+  .add-btn:hover { border-color: #CC0000; color: #CC0000; background: #fff5f5; }
+
+  /* ── Submit ── */
+  .submit-btn {
+    width: 100%; margin-top: 16px; background: #CC0000; color: white;
+    border: none; border-radius: 8px; padding: 13px; font-size: 14px;
+    font-weight: 700; cursor: pointer; font-family: inherit;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background 0.2s; letter-spacing: 0.2px;
+  }
+  .submit-btn:hover { background: #aa0000; }
+
+  /* ── Output info strip ── */
+  .output-strip {
+    margin-top: 12px; background: white; border: 1px solid #e5e7eb;
+    border-radius: 10px; padding: 12px 14px;
+  }
+  .output-strip .title { font-size: 11px; font-weight: 700; color: #374151; margin-bottom: 8px; }
+  .output-row {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: #4b5563; margin-bottom: 5px;
+  }
+  .output-row:last-child { margin-bottom: 0; }
+  .output-row .icon { font-size: 14px; width: 18px; text-align: center; flex-shrink: 0; }
+  .output-row .tag {
+    background: #f3f4f6; border-radius: 4px; padding: 1px 6px;
+    font-size: 11px; font-weight: 600; color: #374151;
+  }
+
+  .footnote { text-align: center; font-size: 11px; color: #9ca3af; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">EPAM</div>
+  <div class="header-text">
+    <h1>Meeting Brief</h1>
+    <p>Salesforce Practice · Sales &amp; Revenue</p>
+  </div>
+</div>
+
+<!-- Workflow strip -->
+<div class="workflow">
+  <div class="wf-step">
+    <div class="wf-dot active">1</div>
+    <span class="wf-label">Fill form</span>
+  </div>
+  <span class="wf-arrow">→</span>
+  <div class="wf-step">
+    <div class="wf-dot next">2</div>
+    <span class="wf-label muted">Check prior briefs</span>
+  </div>
+  <span class="wf-arrow">→</span>
+  <div class="wf-step">
+    <div class="wf-dot next">3</div>
+    <span class="wf-label muted">Research contact</span>
+  </div>
+  <span class="wf-arrow">→</span>
+  <div class="wf-step">
+    <div class="wf-dot next">4</div>
+    <span class="wf-label muted">Generate brief</span>
+  </div>
+  <span class="wf-arrow">→</span>
+  <div class="wf-step">
+    <div class="wf-dot next">5</div>
+    <span class="wf-label muted">Save to OneDrive</span>
+  </div>
+</div>
+
+<form id="form" onsubmit="handleSubmit(event)">
+
+  <!-- 1. WHO -->
+  <div class="section">
+    <div class="section-label"><span class="num">1</span> Who are you meeting?</div>
+    <div class="card">
+      <div id="attendees">
+        <div class="attendee" id="att-0">
+          <div class="row">
+            <div class="field">
+              <label>Name <span style="color:#CC0000">*</span></label>
+              <input type="text" class="n" placeholder="Full name" required />
+            </div>
+            <div class="field">
+              <label>Title <span class="opt">(optional)</span></label>
+              <input type="text" class="t" placeholder="e.g. VP of Sales" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label>Company <span style="color:#CC0000">*</span></label>
+              <input type="text" class="c" placeholder="Company name" required />
+            </div>
+            <div class="field">
+              <label>LinkedIn URL <span class="opt">(recommended)</span></label>
+              <input type="url" class="l" placeholder="https://linkedin.com/in/…" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="add-btn" onclick="addPerson()">＋ Add another person</button>
+    </div>
+  </div>
+
+  <!-- 2. MEETING TYPE -->
+  <div class="section">
+    <div class="section-label"><span class="num">2</span> Meeting type</div>
+    <div class="card">
+      <div class="chips" style="margin-bottom:10px;">
+        <label class="chip"><input type="radio" name="mtype" value="Customer – Existing Account" required /><span>Customer</span></label>
+        <label class="chip"><input type="radio" name="mtype" value="Prospect / New Logo" /><span>Prospect</span></label>
+        <label class="chip"><input type="radio" name="mtype" value="Salesforce Field Sales (AE/SE/CSM)" /><span>Salesforce Field</span></label>
+        <label class="chip"><input type="radio" name="mtype" value="Partner / Alliance" /><span>Partner</span></label>
+        <label class="chip"><input type="radio" name="mtype" value="Other" /><span>Other</span></label>
+      </div>
+      <div class="chips">
+        <label class="chip"><input type="radio" name="mocc" value="Initial Discovery" required /><span>Discovery</span></label>
+        <label class="chip"><input type="radio" name="mocc" value="Follow-up / Proposal" /><span>Follow-up</span></label>
+        <label class="chip"><input type="radio" name="mocc" value="QBR / Executive Review" /><span>QBR</span></label>
+        <label class="chip"><input type="radio" name="mocc" value="Conference / Event Meeting" /><span>Conference</span></label>
+        <label class="chip"><input type="radio" name="mocc" value="Renewal / Expansion" /><span>Renewal</span></label>
+        <label class="chip"><input type="radio" name="mocc" value="Executive Intro" /><span>Exec Intro</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. GOAL -->
+  <div class="section">
+    <div class="section-label"><span class="num">3</span> What's your goal?</div>
+    <div class="card">
+      <div class="row one">
+        <div class="field">
+          <label>What does a successful meeting look like? <span style="color:#CC0000">*</span></label>
+          <textarea id="goal" rows="3" placeholder="e.g. Understand their Salesforce roadmap, introduce EPAM Data Cloud practice, get a workshop on the calendar…" required></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. CONTEXT -->
+  <div class="section">
+    <div class="section-label"><span class="num">4</span> Extra context <span style="font-size:10px;font-weight:400;text-transform:none;letter-spacing:0;color:#9ca3af;">optional</span></div>
+    <div class="card">
+      <div class="row one">
+        <div class="field">
+          <label>Paste any email, event invite, bio, or notes <span class="opt">(raw is fine)</span></label>
+          <textarea id="ctx" rows="3" placeholder="Paste anything relevant — email threads, event brochures, attendee bios, prior meeting notes…"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="submit-btn">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    Generate My Meeting Brief
+  </button>
+
+  <!-- Output info -->
+  <div class="output-strip">
+    <div class="title">What happens next</div>
+    <div class="output-row"><span class="icon">🔍</span><span>Agent checks the shared OneDrive folder for existing briefs on this company</span></div>
+    <div class="output-row"><span class="icon">🌐</span><span>Researches contact via LinkedIn, Crunchbase, company news, AppExchange, Outlook history</span></div>
+    <div class="output-row"><span class="icon">📄</span><span>Delivers full brief in chat <span class="tag">12 sections</span></span></div>
+    <div class="output-row"><span class="icon">💾</span><span>Saves <span class="tag">.docx</span> to shared OneDrive · <span class="tag">YYYY-MM-DD_Company_Contact_Brief.docx</span></span></div>
+  </div>
+
+  <p class="footnote">Shared with the EPAM Salesforce Practice team · Prior briefs on the same account are surfaced automatically</p>
+
+</form>
+
+<script>
+  let count = 1;
+
+  function addPerson() {
+    const id = 'att-' + count++;
+    const div = document.createElement('div');
+    div.className = 'attendee'; div.id = id;
+    div.innerHTML = `
+      <button type="button" class="remove-btn" onclick="document.getElementById('${id}').remove()">✕</button>
+      <div class="row">
+        <div class="field"><label>Name</label><input type="text" class="n" placeholder="Full name"/></div>
+        <div class="field"><label>Title <span class="opt">(optional)</span></label><input type="text" class="t" placeholder="e.g. CTO"/></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Company</label><input type="text" class="c" placeholder="Company name"/></div>
+        <div class="field"><label>LinkedIn URL <span class="opt">(optional)</span></label><input type="url" class="l" placeholder="https://linkedin.com/in/…"/></div>
+      </div>`;
+    document.getElementById('attendees').appendChild(div);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const mtype = document.querySelector('input[name="mtype"]:checked')?.value || 'Not specified';
+    const mocc  = document.querySelector('input[name="mocc"]:checked')?.value  || 'Not specified';
+    const goal  = document.getElementById('goal').value.trim();
+    const ctx   = document.getElementById('ctx').value.trim();
+
+    const people = [];
+    document.querySelectorAll('.attendee').forEach(a => {
+      const name = a.querySelector('.n')?.value?.trim();
+      if (!name) return;
+      people.push({
+        name, title: a.querySelector('.t')?.value?.trim() || '',
+        company: a.querySelector('.c')?.value?.trim() || '',
+        linkedin: a.querySelector('.l')?.value?.trim() || ''
+      });
+    });
+
+    const lines = [
+      '📋 MEETING BRIEF REQUEST',
+      '',
+      `Meeting type: ${mtype}`,
+      `Occasion: ${mocc}`,
+      '',
+      "--- WHO I'M MEETING ---",
+    ];
+
+    people.forEach(({ name, title, company, linkedin }) => {
+      let line = `• ${name}`;
+      if (title)   line += `, ${title}`;
+      if (company) line += ` @ ${company}`;
+      if (linkedin) line += ` | LinkedIn: ${linkedin}`;
+      lines.push(line);
+    });
+
+    lines.push('', '--- MY GOAL ---', goal);
+    if (ctx) lines.push('', '--- ADDITIONAL CONTEXT ---', ctx);
+
+    // Derive company for prior-research check
+    const companies = [...new Set(people.map(p => p.company).filter(Boolean))];
+    if (companies.length) {
+      lines.push('', `--- COMPANIES TO CHECK FOR PRIOR BRIEFS ---`);
+      companies.forEach(c => lines.push(`• ${c}`));
+    }
+
+    lines.push(
+      '',
+      'Steps:',
+      '1. Search the shared OneDrive/SharePoint folder for any existing briefs on this company or contact. Surface prior research in the brief.',
+      '2. Research each contact via LinkedIn, Crunchbase, ZoomInfo public, company website, recent news, Salesforce AppExchange, and Outlook email history.',
+      '3. Generate a comprehensive meeting brief (12 sections) for me as an EPAM Salesforce Practice sales lead.',
+      '4. Save the brief as a Word (.docx) file named YYYY-MM-DD_[Company]_[LastName]_[FirstName]_Brief.docx to the workspace folder for upload to the shared OneDrive.'
+    );
+
+    sendPrompt(lines.join('\n'));
+  }
+</script>
+</body>
+</html>
