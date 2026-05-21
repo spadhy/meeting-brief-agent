@@ -19,7 +19,7 @@ Prepares you for any sales, partner, or customer meeting in minutes:
 
 ### Install the Plugin
 
-1. Download `epam-sf-meeting-brief.plugin` from the [Releases page](../../releases)
+1. Download `epam-sf-meeting-brief.plugin` from the [Releases page](https://github.com/spadhy/meeting-brief-agent/releases)
 2. Open Cowork → Settings → Plugins → Install Plugin
 3. Select the `.plugin` file
 4. Connect **Microsoft 365** in Cowork Settings → Connectors (needed for OneDrive + Outlook access)
