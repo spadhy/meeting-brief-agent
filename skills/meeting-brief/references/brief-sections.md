@@ -1,6 +1,6 @@
 # Meeting Brief — Section Reference
 
-Every brief must include these 12 sections in this order.
+Every brief must include these 13 sections in this order.
 
 ---
 
@@ -125,3 +125,33 @@ A table with 3 likely objections and specific responses:
 - What to ask for at the end of the meeting
 - Who else to involve from EPAM
 - What to send as follow-up
+
+---
+
+## 13. Mutual Connections & Warm Introduction Paths
+
+This section identifies people in your network who already know this contact or this company — and can help you walk in warmer.
+
+Structure it as three tiers:
+
+### Tier 1 — Direct warm intros (people you both know)
+List any individuals confirmed as mutual connections:
+- Name, their role/company, how you know them
+- How they connect to the contact (colleague, former employer, industry peer, Salesforce ecosystem)
+- Suggested action: *"Ask [Name] for a quick intro message before the meeting"*
+
+### Tier 2 — EPAM colleagues with account or industry exposure
+List EPAM people who have worked with this company or in this vertical:
+- Name, role, basis of connection (found via Outlook, Teams, Delivery Central, prior brief)
+- What they can provide: account intelligence, a warm reference, context on the contact
+- Suggested action: *"Ping [Name] on Teams — they worked with [Company] on [project]"*
+
+### Tier 3 — Salesforce ecosystem connections
+List any Salesforce AEs, SEs, or partner reps who cover this account or have a relationship with the contact:
+- Name (if identifiable), role, basis of connection
+- Suggested action: *"Loop in [Name] — they own the Salesforce relationship at [Company]"*
+
+### If no mutual connections are found
+State clearly: *"No direct mutual connections identified. Consider requesting a LinkedIn introduction from [closest second-degree connection], or use the Salesforce AE relationship as your warm path in."*
+
+**Format tip:** Present as a scannable list, not a wall of text. The user should be able to glance at this section and immediately know who to call before the meeting.

@@ -6,7 +6,7 @@ description: >
   "research a contact", "generate a meeting brief", "brief me on someone", or submits
   the Meeting Brief intake form. The skill researches the contact from public sources,
   cross-references prior briefs in the shared OneDrive folder, and delivers a
-  formatted 12-section brief plus a Word document (.docx) saved to the workspace.
+  formatted 13-section brief plus a Word document (.docx) saved to the workspace.
 ---
 
 # Meeting Brief Agent — Skill Instructions
@@ -69,6 +69,15 @@ Run these searches in parallel:
 - Search Outlook emails using `outlook_email_search` with query: `[Company] OR [Contact Name]`
 - Extract: prior email threads, event invites, meeting history, known EPAM contacts on the account
 
+**LinkedIn Mutual Connections**
+- Search: `"[Full Name]" "[Company]" linkedin.com/in mutual connections`
+- Search: `"[Full Name]" "[Company]" linkedin.com EPAM` — EPAM colleagues who may know this person
+- Search: `"[Full Name]" "[Company]" linkedin.com Salesforce` — Salesforce AEs or SE in common
+- Search Outlook using `outlook_email_search` for any prior cc/email thread involving the contact's name or domain
+- Search `chat_message_search` in Teams for any mention of the contact name or company
+- Cross-reference the contact's prior companies (from their LinkedIn history) against known EPAM accounts — shared employers are strong warm-intro signals
+- Identify: EPAM colleagues, Salesforce field reps, mutual industry peers, or former colleagues who could make an introduction or provide a reference
+
 **Crunchbase (for startups / growth companies)**
 - Search: `[Company] site:crunchbase.com`
 - Extract: funding rounds, investors, headcount, founding year
@@ -81,7 +90,7 @@ See `references/research-sources.md` for full source list and what to extract fr
 
 ### Step 4 — Generate the Brief in Chat
 
-Deliver the full 12-section brief in chat. See `references/brief-sections.md` for the exact structure and content of each section.
+Deliver the full 13-section brief in chat. See `references/brief-sections.md` for the exact structure and content of each section.
 
 Format guidelines:
 - Use clear section headers with emoji icons
